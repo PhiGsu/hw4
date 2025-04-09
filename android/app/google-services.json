@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "660712508144",
+    "project_id": "mad-hw4-dc4cb",
+    "storage_bucket": "mad-hw4-dc4cb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660712508144:android:e0af9ebb206d0a47335035",
+        "android_client_info": {
+          "package_name": "com.example.hw4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAK0WNwQaSTw1oxv4U0PufvHzv-zSdepo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
