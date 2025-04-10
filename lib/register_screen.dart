@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hw4/home_screen.dart';
 import 'package:hw4/login_screen.dart';
 import 'package:hw4/main.dart';
@@ -15,6 +16,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
   late final TextEditingController _confirmPasswordController;
+  late final TextEditingController _firstNameController;
+  late final TextEditingController _lastNameController;
+  String _selectedRole = 'User';
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -23,6 +27,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
     _confirmPasswordController = TextEditingController();
+    _firstNameController = TextEditingController();
+    _lastNameController = TextEditingController();
   }
 
   @override
@@ -30,6 +36,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     super.dispose();
   }
 
@@ -64,13 +72,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return null;
   }
 
+  String? _nameValidator(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Please enter your name';
+    }
+    return null;
+  }
+
   Future<void> _registerUser() async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
         );
+
+        await FirebaseFirestore.instance.collection('users').doc(userCredential.user?.uid).set({
+          'firstName': _firstNameController.text,
+          'lastName': _lastNameController.text,
+          'role': _selectedRole,
+          'registeredAt': Timestamp.fromDate(DateTime.now()),
+        });
 
         if (mounted) {
           Navigator.pushReplacement(
@@ -93,7 +115,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MessageBoardAppBar(),
+      appBar: const MessageBoardAppBar(),
       body: Center(
         child: Container(
           margin: const EdgeInsets.all(16),
@@ -112,6 +134,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
+                TextFormField(
+                  controller: _firstNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'First Name',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: _nameValidator,
+                ),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _lastNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Last Name',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: _nameValidator,
+                ),
+                const SizedBox(height: 8),
                 TextFormField(
                   controller: _emailController,
                   decoration: const InputDecoration(
@@ -139,6 +179,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   obscureText: true,
                   validator: _confirmPasswordValidator,
+                ),
+                const SizedBox(height: 8),
+                DropdownButtonFormField<String>(
+                  value: _selectedRole,
+                  decoration: const InputDecoration(
+                    labelText: 'Role',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: <String>['User', 'Moderator', 'Admin']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedRole = newValue ?? 'User';
+                    });
+                  },
                 ),
                 const SizedBox(height: 8),
                 ElevatedButton(
