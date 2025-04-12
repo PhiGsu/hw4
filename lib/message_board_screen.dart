@@ -137,6 +137,8 @@ class _MessageBoardScreenState extends State<MessageBoardScreen> {
                     decoration: const InputDecoration(
                       labelText: 'Enter your message',
                       border: OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
                   ),
                 ),

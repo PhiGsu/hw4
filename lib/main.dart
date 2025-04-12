@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hw4/firebase_options.dart';
 import 'package:hw4/home_screen.dart';
 import 'package:hw4/login_screen.dart';
+import 'package:hw4/profile_screen.dart';
+import 'package:hw4/settings_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -87,8 +89,7 @@ class MessageBoardAppDrawer extends StatelessWidget {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          const LoginScreen())); // Change to profile screen
+                      builder: (context) => const ProfileScreen()));
             },
           ),
           ListTile(
@@ -99,8 +100,7 @@ class MessageBoardAppDrawer extends StatelessWidget {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          const LoginScreen())); // Change to settings screen
+                      builder: (context) => const SettingsScreen()));
             },
           ),
         ],
