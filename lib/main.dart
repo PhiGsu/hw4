@@ -2,9 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hw4/firebase_options.dart';
 import 'package:hw4/home_screen.dart';
-import 'package:hw4/login_screen.dart';
 import 'package:hw4/profile_screen.dart';
 import 'package:hw4/settings_screen.dart';
+import 'package:hw4/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +25,7 @@ class MessageBoardApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }
