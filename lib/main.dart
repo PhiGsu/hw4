@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hw4/firebase_options.dart';
@@ -30,33 +29,34 @@ class MessageBoardApp extends StatelessWidget {
 }
 
 // Appbar to be used across all screens
-class MessageBoardAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MessageBoardAppBar({super.key});
+class MessageBoardAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  final bool isLoggedIn;
+  final String title;
+
+  const MessageBoardAppBar({
+    super.key,
+    required this.isLoggedIn,
+    this.title = 'Message Board',
+  });
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        bool isLoggedIn = snapshot.hasData;
-
-        return AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text('Message Board'),
-          centerTitle: true,
-          leading: isLoggedIn
-              ? IconButton(
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  icon: const Icon(Icons.menu),
-                )
-              : null,
-        );
-      },
+    return AppBar(
+      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      title: Text(title),
+      centerTitle: true,
+      leading: isLoggedIn
+          ? IconButton(
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: const Icon(Icons.menu),
+            )
+          : null,
     );
   }
 }

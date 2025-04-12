@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MessageBoardAppBar(),
+      appBar: const MessageBoardAppBar(isLoggedIn: true),
       drawer: const MessageBoardAppDrawer(),
       body: StreamBuilder<QuerySnapshot>(
         stream: getBoards(),
@@ -55,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               return ListView.builder(
                 itemCount: boards.length,
+                padding: EdgeInsets.only(bottom: 8),
                 itemBuilder: (context, index) {
                   final board = boards[index];
                   return ListTile(
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     tileColor: boardColors[board['name']],
                     leading: Icon(
                       boardIcons[board['name']] ?? Icons.question_mark,
-                      size: minTileHeight * 0.75,
+                      size: minTileHeight * 0.4,
                     ),
                     minTileHeight: minTileHeight,
                     onTap: () {
